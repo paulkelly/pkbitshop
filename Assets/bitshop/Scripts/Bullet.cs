@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour {
 
 	public float speed = 0.1f;
 	bool playerBullet = false;
+	float amount;
 	private Vector3 direction;
 
 	public Bullet(Vector3 direction)
@@ -17,9 +18,24 @@ public class Bullet : MonoBehaviour {
 		this.direction = direction;
 	}
 
+	public void setDamage(float amount)
+	{
+		this.amount = amount;
+	}
+
+	public float getDamage()
+	{
+		return amount;
+	}
+
 	public void setPlayerBullet()
 	{
 		playerBullet = true;
+	}
+
+	public bool isPlayerBullet()
+	{
+		return playerBullet;
 	}
 
 	// Update is called once per frame
@@ -32,6 +48,11 @@ public class Bullet : MonoBehaviour {
 		if (playerBullet && collider.gameObject.tag.Equals ("PlayerShip") || collider.isTrigger)
 		{
 			return;
+		}
+		else if(collider.gameObject.tag.Equals ("PlayerShip"))
+		{
+			DamagePlayer damagePlayerEvent = new DamagePlayer (transform.gameObject, 1);
+			GameEvents.GameEventManager.post (damagePlayerEvent);
 		}
 		Destroy(this.gameObject);
 	}

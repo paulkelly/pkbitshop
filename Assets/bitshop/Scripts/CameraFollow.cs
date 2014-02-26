@@ -1,16 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Camera))]
 public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 {
 	public float xSmooth = 20f;		// How smoothly the camera catches up with it's target movement in the x axis.
 	public float ySmooth = 20f;		// How smoothly the camera catches up with it's target movement in the y axis.
 
+	public Vector2 offset = new Vector2(0, -1f);
+
 	public Transform target;
 
+	const float NORMAL_ASPECT = 4/3f;
+	const float COMPUTER_WIDE_ASPECT = 16/10f;
+	const float EPSILON = 0.01f;
+	
 	void Start ()
 	{
 		GameEvents.GameEventManager.registerListener(this);
+
+		float aspectRatio = Screen.width / ((float)Screen.height);
+		
+		if (Mathf.Abs(aspectRatio - NORMAL_ASPECT) < EPSILON)
+		{
+			camera.rect = new Rect(0f, 0.125f, 1f, 0.75f); // 16:9 viewport in a 4:3 screen res
+		}
+		else if (Mathf.Abs(aspectRatio - COMPUTER_WIDE_ASPECT) < EPSILON)
+		{
+			camera.rect = new Rect(0f, 0.05f, 1f, 0.9f); // 16:9 viewport in a 16:10 screen res
+		}
 	}
 
 	void Update ()
@@ -21,14 +39,14 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 	void TrackTarget ()
 	{
 		// By default the target x and y coordinates of the camera are it's current x and y coordinates.
-		float targetX = target.transform.position.x;
-		float targetY = target.transform.position.y;
+		float targetX = target.transform.position.x + offset.x;
+		float targetY = target.transform.position.y + offset.y;
 
 		// ... the target x coordinate should be a Lerp between the camera's current x position and the player's current x position.
-		targetX = Mathf.Lerp(transform.position.x, target.position.x, xSmooth * Time.deltaTime);
+		targetX = Mathf.Lerp(transform.position.x, targetX, xSmooth * Time.deltaTime);
 
 		// ... the target y coordinate should be a Lerp between the camera's current y position and the player's current y position.
-		targetY = Mathf.Lerp(transform.position.y, target.position.y, ySmooth * Time.deltaTime);
+		targetY = Mathf.Lerp(transform.position.y, targetY, ySmooth * Time.deltaTime);
 
 		// Set the camera's position to the target position with the same z component.
 		transform.position = new Vector3(targetX, targetY, transform.position.z);

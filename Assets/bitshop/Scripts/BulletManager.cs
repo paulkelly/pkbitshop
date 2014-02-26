@@ -17,12 +17,13 @@ public class BulletManager : MonoBehaviour{
 		return bulletManager;
 	}
 
-	public void spawnBullet(Vector3 position, Vector3 direction, bool firedByPlayer)
+	public void spawnBullet(Vector3 position, Vector3 direction, bool firedByPlayer, float damage)
 	{
 		GameObject spawnedBullet = (GameObject) Instantiate(bullet, position, Quaternion.identity);
 		
 		Bullet bulletComponent = spawnedBullet.GetComponent<Bullet>();
 		bulletComponent.setDirection (direction);
+		bulletComponent.setDamage (damage);
 		if(firedByPlayer) bulletComponent.setPlayerBullet();
 	}
 

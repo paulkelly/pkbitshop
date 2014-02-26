@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerShip2D : MonoBehaviour 
+public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 {
 	bool facingRight = true;		// For determining which way the player is currently facing.
 
@@ -14,6 +14,17 @@ public class PlayerShip2D : MonoBehaviour
 	private static int fireRateLevel = 4;
 	private static int damageLevel = 0;
 
+	bool shieldEnabled = true;
+	bool isShieldDisabling = false;
+	bool isShieldEnabling = false;
+
+	bool tookDamage = false;
+	bool invunerable = false;
+
+	private int shield = 3;
+	private int shieldCharge = 0;
+	private int shieldMaxCharge = 3;
+
 	private float fireRate = fireRateProgress[fireRateLevel]; // The number of times the player can shoot in 1 second.
 	private float cooldown = 0f;
 	bool shooting = false;
@@ -24,6 +35,7 @@ public class PlayerShip2D : MonoBehaviour
 
     void Awake()
 	{
+		GameEvents.GameEventManager.registerListener(this);
 		anim = GetComponent<Animator>();
 	}
 
@@ -32,6 +44,43 @@ public class PlayerShip2D : MonoBehaviour
 		bulletManager = BulletManager.getInstance();
 	}
 
+	void Update()
+	{
+
+		if (anim.GetCurrentAnimatorStateInfo(0).IsName("shielddisable") && !isShieldDisabling)
+		{
+			isShieldDisabling = true;
+		}
+		if (!anim.GetCurrentAnimatorStateInfo(0).IsName("shielddisable") && isShieldDisabling)
+		{
+			isShieldDisabling = false;
+			shieldEnabled = false;
+			
+			setShieldEnabled(false);
+		}
+
+		if (anim.GetCurrentAnimatorStateInfo(0).IsName("shieldenable") && !isShieldEnabling)
+		{
+			isShieldEnabling = true;
+		}
+		if (!anim.GetCurrentAnimatorStateInfo(0).IsName("shieldenable") && isShieldEnabling)
+		{
+			isShieldEnabling = false;
+			shieldEnabled = true;
+
+			setShieldEnabled(true);
+		}
+
+		if (anim.GetCurrentAnimatorStateInfo(0).IsName("invunerable") && tookDamage)
+		{
+			invunerable = true;
+			tookDamage = false;
+		}
+		if (!anim.GetCurrentAnimatorStateInfo(0).IsName("invunerable") && invunerable)
+		{
+			invunerable = false;
+		}
+	}
 
 	void FixedUpdate()
 	{
@@ -67,6 +116,18 @@ public class PlayerShip2D : MonoBehaviour
 			if(transform.GetChild(i).particleSystem != null) return transform.GetChild(i).particleSystem;
 		}
 		return null;
+	}
+
+	void setShieldEnabled(bool enabled)
+	{
+		for(int i=0; i<transform.childCount; i++)
+		{
+			if(transform.GetChild(i).name.Equals("Shield"))
+			{
+				transform.GetChild(i).gameObject.SetActive(enabled);
+				Debug.Log ("Shield enabled set to " + enabled);
+			}
+		}
 	}
 
 	public void Move(float moveH, float moveV)
@@ -123,7 +184,7 @@ public class PlayerShip2D : MonoBehaviour
 		if (direction.Equals (Direction.LEFT))
 		{
 			bulletDirection = Vector3.left + playerDirectiony;
-			bulletManager.spawnBullet (transform.position, bulletDirection, true);
+			bulletManager.spawnBullet (transform.position, bulletDirection, true, damage);
 
 			if(facingRight)
 				Flip();
@@ -131,10 +192,80 @@ public class PlayerShip2D : MonoBehaviour
 		else if (direction.Equals (Direction.RIGHT))
 		{
 			bulletDirection = Vector3.right + playerDirectiony;
-			bulletManager.spawnBullet (transform.position, bulletDirection, true);
+			bulletManager.spawnBullet (transform.position, bulletDirection, true, damage);
 
 			if(!facingRight)
 				Flip();
+		}
+	}
+
+	void doDamage(int amount)
+	{
+		if (invunerable || tookDamage) return;
+		Debug.Log ("Player took damage");
+		anim.SetTrigger("Invunerable");
+		tookDamage = true;
+		if(shield > 0)
+		{
+			shield -= amount;
+			if(shield <= 0)
+			{
+				shield = 0;
+				anim.SetTrigger("DisableShield");
+			}
+		}
+		else
+		{
+			Debug.Break();
+		}
+		UpdateHud updateHudEvent = new UpdateHud ();
+		GameEvents.GameEventManager.post (updateHudEvent);
+	}
+
+	void gainShield()
+	{
+		if(shield == 0) anim.SetTrigger("EnableShield");
+
+		shield++;
+	}
+
+	void gainShieldCharge()
+	{
+		shieldCharge++;
+		if(shieldCharge >= shieldMaxCharge)
+		{
+			shieldCharge = shieldCharge % shieldMaxCharge;
+			gainShield();
+		}
+		UpdateHud updateHudEvent = new UpdateHud ();
+		GameEvents.GameEventManager.post (updateHudEvent);
+	}
+
+	public int getShield()
+	{
+		return shield;
+	}
+
+	public int getShieldCharge()
+	{
+		return shieldCharge;
+	}
+
+	public void receiveEvent(GameEvents.GameEvent e)
+	{
+		if(e.GetType().Name.Equals("DamagePlayer"))
+		{
+			int damage = ((DamagePlayer) e).getDamageValue();
+			doDamage(damage);
+		}
+		else if(e.GetType().Name.Equals("EnterRoom"))
+		{
+			bool isFirstTime = ((EnterRoom) e).isFirstTime();
+			if(isFirstTime)
+			{
+				Debug.Log ("Entered room for first time.");
+				gainShieldCharge();
+			}
 		}
 	}
 }
