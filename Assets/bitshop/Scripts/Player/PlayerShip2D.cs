@@ -8,13 +8,12 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 
 	[SerializeField] float maxSpeed = 10f;		// The fastest the player can travel in the x axis.
 	
-	[SerializeField] public static float[] fireRateProgress = {2f, 3f, 4f, 5f, 6f};	
-	[SerializeField] public static float[] damageProgress = {6f, 8f, 10f, 12f, 14f};
+	[SerializeField] public static float[] fireRateProgress = {2f, 2.5f, 3f, 3.5f, 4f};	
+	[SerializeField] public static float[] damageProgress = {4f, 5f, 6f, 8f, 10f};
 	
-	private static int fireRateLevel = 4;
+	private static int fireRateLevel = 0;
 	private static int damageLevel = 0;
-
-	bool shieldEnabled = true;
+	
 	bool isShieldDisabling = false;
 	bool isShieldEnabling = false;
 
@@ -31,12 +30,16 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	private float damage = damageProgress[damageLevel]; // The number of damage the player deals per shot.
 
 	Animator anim;										// Reference to the player's animator component.
+	ShipSounds shipSounds;
 	BulletManager bulletManager;
+
+	public float bounceForce = 10000f;
 
     void Awake()
 	{
 		GameEvents.GameEventManager.registerListener(this);
 		anim = GetComponent<Animator>();
+		shipSounds = GetComponent<ShipSounds>();
 	}
 
 	void Start()
@@ -54,7 +57,6 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		if (!anim.GetCurrentAnimatorStateInfo(0).IsName("shielddisable") && isShieldDisabling)
 		{
 			isShieldDisabling = false;
-			shieldEnabled = false;
 			
 			setShieldEnabled(false);
 		}
@@ -66,7 +68,6 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		if (!anim.GetCurrentAnimatorStateInfo(0).IsName("shieldenable") && isShieldEnabling)
 		{
 			isShieldEnabling = false;
-			shieldEnabled = true;
 
 			setShieldEnabled(true);
 		}
@@ -125,7 +126,6 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 			if(transform.GetChild(i).name.Equals("Shield"))
 			{
 				transform.GetChild(i).gameObject.SetActive(enabled);
-				Debug.Log ("Shield enabled set to " + enabled);
 			}
 		}
 	}
@@ -165,9 +165,6 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		{
 			particleSystem.transform.Rotate(new Vector3(180, 0, 0));
 		}
-		
-		// Set horizontal velocity to 0 when turning
-		rigidbody2D.velocity = new Vector2(0, rigidbody2D.velocity.y);
 	}
 
 	public void shoot (Direction direction)
@@ -175,6 +172,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		if (cooldown > 0f) return;
 		cooldown = 1f / fireRate;
 		anim.SetTrigger("Shoot");
+		shipSounds.PlayGunshot ();
 		Vector2 playerDirection = rigidbody2D.velocity;
 		float curveDapening = (maxSpeed * 2);
 		Vector3 playerDirectionx = new Vector3 (playerDirection.x, 0, 0) / curveDapening;
@@ -201,8 +199,11 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 
 	void doDamage(int amount)
 	{
+		if(shield > 0)
+		{
+			shipSounds.playTakeShieldDamage();
+		}
 		if (invunerable || tookDamage) return;
-		Debug.Log ("Player took damage");
 		anim.SetTrigger("Invunerable");
 		tookDamage = true;
 		if(shield > 0)
@@ -216,6 +217,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		}
 		else
 		{
+			shipSounds.playDeath();
 			Debug.Break();
 		}
 		UpdateHud updateHudEvent = new UpdateHud ();
@@ -256,14 +258,31 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		if(e.GetType().Name.Equals("DamagePlayer"))
 		{
 			int damage = ((DamagePlayer) e).getDamageValue();
+			bool doKnockback = !(tookDamage || invunerable) && ((DamagePlayer) e).bounceAfterTakingDamage();
 			doDamage(damage);
+
+			if(doKnockback)
+			{
+				GameObject damager = ((DamagePlayer) e).getDamager();
+
+				if(damager.tag.Equals("Enemy"))
+				{
+					Vector2 direction = new Vector2(transform.position.x - damager.transform.position.x, 
+					                                transform.position.y - damager.transform.position.y);
+					rigidbody2D.AddForce(direction * bounceForce);
+				}
+				else
+				{
+					Vector2 direction = rigidbody2D.velocity.normalized * -1;;
+					rigidbody2D.AddForce(direction * bounceForce);
+				}
+			}
 		}
 		else if(e.GetType().Name.Equals("EnterRoom"))
 		{
 			bool isFirstTime = ((EnterRoom) e).isFirstTime();
 			if(isFirstTime)
 			{
-				Debug.Log ("Entered room for first time.");
 				gainShieldCharge();
 			}
 		}

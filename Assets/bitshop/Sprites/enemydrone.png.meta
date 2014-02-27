@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 045ebba676478af41bd911f1edc1918d
+guid: 1bb9b0f09f8bb3d40a844268efca905c
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -41,7 +41,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: body
+    - name: enemydrone_body
       rect:
         serializedVersion: 2
         x: 0
@@ -50,7 +50,7 @@ TextureImporter:
         height: 257
       alignment: 0
       pivot: {x: .5, y: .5}
-    - name: center_inactive
+    - name: enemydrone_inactive
       rect:
         serializedVersion: 2
         x: 26
@@ -59,7 +59,7 @@ TextureImporter:
         height: 86
       alignment: 0
       pivot: {x: .5, y: .5}
-    - name: center_active
+    - name: enemydrone_active
       rect:
         serializedVersion: 2
         x: 166
