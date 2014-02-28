@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour {
 	float amount;
 	private Vector3 direction;
 
+	public GameObject explosion;
+
 	public Bullet(Vector3 direction)
 	{
 		this.direction = direction;
@@ -55,5 +57,9 @@ public class Bullet : MonoBehaviour {
 			GameEvents.GameEventManager.post (damagePlayerEvent);
 		}
 		Destroy(this.gameObject);
+
+		var expl = Instantiate(explosion, transform.position, Quaternion.identity);
+		Destroy(gameObject); // destroy the grenade
+		Destroy(expl, 1); // delete the explosion after 1 second
 	}
 }

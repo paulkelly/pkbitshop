@@ -10,6 +10,8 @@ public class RoomTrigger : MonoBehaviour {
 	bool blocked = false;
 	ArrayList blockers = new ArrayList();
 
+	ArrayList enemies = new ArrayList();
+
 	void Start()
 	{
 		for(int i=0; i<transform.childCount; i++)
@@ -34,12 +36,9 @@ public class RoomTrigger : MonoBehaviour {
 		if(blocked)
 		{
 			int enemyCount = 0;
-			for(int i=0; i<transform.childCount; i++)
+			foreach(GameObject obj in enemies)
 			{
-				if(transform.GetChild(i).tag.Equals("Enemy"))
-				{
-					enemyCount++;
-				}
+				if(obj != null) enemyCount ++;
 			}
 			if(enemyCount <= 0)
 			{
@@ -63,6 +62,8 @@ public class RoomTrigger : MonoBehaviour {
 
 		if (enemies > 0)
 		{
+			blocked = true;
+			Debug.Log ("Blocking room");
 			Vector3 position = new Vector3 (transform.position.x - 20.8f, transform.position.y, transform.position.z + 1);
 			GameObject blocker = (GameObject) Instantiate(blockerObj, position, Quaternion.identity);
 			blockers.Add (blocker);
@@ -83,9 +84,8 @@ public class RoomTrigger : MonoBehaviour {
 
 	void SpawnEnemy(GameObject type, Vector3 position)
 	{
-		Instantiate(type, position, Quaternion.identity);
-
-		blocked = true;
+		GameObject newEnemy = (GameObject) Instantiate(type, position, Quaternion.identity);
+		enemies.Add (newEnemy);
 	}
 
 	void unblockRoom()

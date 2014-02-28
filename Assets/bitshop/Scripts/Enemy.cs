@@ -5,18 +5,23 @@ public class Enemy : MonoBehaviour {
 
 	public float bounceForce = 8000f;
 
-	public float health = 30f;
+	public float maxHealth = 30f;
+	public float health;
 	private bool dead = false;
 
 	public GameObject explosion;
 
+	public GameObject[] powerups;
+	public float powerDropChange = 33f;
+
 	Animator anim;	
-	ShipSounds shipSounds;
+	public ShipSounds shipSounds { get; set; }
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
 		shipSounds = GetComponent<ShipSounds>();
+		health = maxHealth;
 	}
 
 	void takeDamage(float amount)
@@ -24,20 +29,33 @@ public class Enemy : MonoBehaviour {
 		health -= amount;
 		if(health < 0)
 		{
-			shipSounds.playDeath();
-			anim.SetTrigger("Death");
-			Invoke("Death", 0.5f);
-			rigidbody2D.velocity = Vector2.zero;
-			dead = true;
-
-			var expl = Instantiate(explosion, transform.position, Quaternion.identity);
-			Destroy(gameObject); // destroy the grenade
-			Destroy(expl, 3); // delete the explosion after 3 seconds
+			kill ();
 		}
 		else
 		{
 			shipSounds.PlayTakeDamage();
 		}
+	}
+
+	public void kill()
+	{
+		shipSounds.playDeath();
+		anim.SetTrigger("Death");
+		Invoke("Death", 0.5f);
+		rigidbody2D.velocity = Vector2.zero;
+		dead = true;
+
+		if(powerups.Length > 0)
+		{
+			int dropPowerup = Random.Range (1, 100);
+			if(dropPowerup < powerDropChange)
+			{
+				Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position, Quaternion.identity);
+			}
+		}
+		var expl = Instantiate(explosion, transform.position, Quaternion.identity);
+		Destroy(gameObject); // destroy the grenade
+		Destroy(expl, 1); // delete the explosion after 1 second
 	}
 
 	void Death()

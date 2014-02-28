@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7e2994cfb7986f648bfac8c3f88d1ad7
+guid: bdebe45bab532b04a8610007e938bf72
 TextureImporter:
   serializedVersion: 2
   mipmaps:
@@ -30,7 +30,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -40,24 +40,6 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites:
-    - name: enemyship_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 33
-        width: 247
-        height: 159
-      alignment: 0
-      pivot: {x: 0, y: 0}
-    - name: enemyship_1
-      rect:
-        serializedVersion: 2
-        x: 110
-        y: 0
-        width: 67
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+    sprites: []
   spritePackingTag: 
   userData: 

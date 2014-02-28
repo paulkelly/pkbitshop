@@ -6,6 +6,8 @@ public class Hud : MonoBehaviour, GameEvents.GameEventListener {
 	public GameObject playerShip;
 	private PlayerShip2D playerShipComponent;
 	public GameObject shieldValue;
+	public GameObject dmgValue;
+	public GameObject rofValue;
 	public Sprite[] numbers;
 
 	public Sprite noCharge;
@@ -17,13 +19,24 @@ public class Hud : MonoBehaviour, GameEvents.GameEventListener {
 	void Start () {
 		GameEvents.GameEventManager.registerListener(this);
 		playerShipComponent = playerShip.GetComponent<PlayerShip2D>();
+
+		Invoke("updateHud", 0.1f);
 	}
 
 	void updateHud()
 	{
 		int shield = playerShipComponent.getShield();
+		int damage = playerShipComponent.getDamage()+1;
+		int rateOfFire = playerShipComponent.getRateOfFire ()+1;
+
 		SpriteRenderer spriteRenderer = shieldValue.GetComponent<SpriteRenderer>();
 		spriteRenderer.sprite = numbers[shield];
+
+		spriteRenderer = dmgValue.GetComponent<SpriteRenderer>();
+		spriteRenderer.sprite = numbers[damage];
+
+		spriteRenderer = rofValue.GetComponent<SpriteRenderer>();
+		spriteRenderer.sprite = numbers[rateOfFire];
 
 		int charges = playerShipComponent.getShieldCharge();
 

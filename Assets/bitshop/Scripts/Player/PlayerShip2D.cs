@@ -10,7 +10,9 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	
 	[SerializeField] public static float[] fireRateProgress = {2f, 2.5f, 3f, 3.5f, 4f};	
 	[SerializeField] public static float[] damageProgress = {4f, 5f, 6f, 8f, 10f};
-	
+
+	public GameObject GunshotParticleEffect;
+
 	private static int fireRateLevel = 0;
 	private static int damageLevel = 0;
 	
@@ -45,6 +47,8 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	void Start()
 	{
 		bulletManager = BulletManager.getInstance();
+		UpdateHud updateHudEvent = new UpdateHud ();
+		GameEvents.GameEventManager.post (updateHudEvent);
 	}
 
 	void Update()
@@ -119,6 +123,22 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		return null;
 	}
 
+	Transform getBulletSpawnPoint()
+	{
+		for(int i=0; i<transform.childCount; i++)
+		{
+			Debug.Log("Found Child");
+			for(int j=0; j<transform.GetChild(i).childCount; j++)
+			{
+				if(transform.GetChild(i).GetChild(j).tag.Equals("BulletSpawn"))
+				{
+					return transform.GetChild(i).GetChild(j);
+				}
+			}
+		}
+		return null;
+	}
+
 	void setShieldEnabled(bool enabled)
 	{
 		for(int i=0; i<transform.childCount; i++)
@@ -182,7 +202,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		if (direction.Equals (Direction.LEFT))
 		{
 			bulletDirection = Vector3.left + playerDirectiony;
-			bulletManager.spawnBullet (transform.position, bulletDirection, true, damage);
+			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection, true, damage);
 
 			if(facingRight)
 				Flip();
@@ -190,11 +210,18 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		else if (direction.Equals (Direction.RIGHT))
 		{
 			bulletDirection = Vector3.right + playerDirectiony;
-			bulletManager.spawnBullet (transform.position, bulletDirection, true, damage);
+			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection, true, damage);
 
 			if(!facingRight)
 				Flip();
 		}
+		spawnGunshotPaticleEffect ();
+	}
+
+	void spawnGunshotPaticleEffect()
+	{
+		var expl = Instantiate(GunshotParticleEffect, getBulletSpawnPoint().position, Quaternion.identity);
+		Destroy(expl, 1); // delete the explosion after 1 second
 	}
 
 	void doDamage(int amount)
@@ -227,8 +254,34 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	void gainShield()
 	{
 		if(shield == 0) anim.SetTrigger("EnableShield");
-
 		shield++;
+
+		UpdateHud updateHudEvent = new UpdateHud ();
+		GameEvents.GameEventManager.post (updateHudEvent);
+	}
+
+	void gainRateofFire()
+	{
+		if(fireRateLevel < fireRateProgress.Length-1)
+		{
+			fireRateLevel++;
+			fireRate = fireRateProgress[fireRateLevel];
+		}
+
+		UpdateHud updateHudEvent = new UpdateHud ();
+		GameEvents.GameEventManager.post (updateHudEvent);
+	}
+
+	void gainDamage()
+	{
+		if(damageLevel < damageProgress.Length-1)
+		{
+			damageLevel++;
+			damage = damageProgress[damageLevel];
+		}
+
+		UpdateHud updateHudEvent = new UpdateHud ();
+		GameEvents.GameEventManager.post (updateHudEvent);
 	}
 
 	void gainShieldCharge()
@@ -246,6 +299,16 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	public int getShield()
 	{
 		return shield;
+	}
+
+	public int getDamage()
+	{
+		return damageLevel;
+	}
+
+	public int getRateOfFire()
+	{
+		return fireRateLevel;
 	}
 
 	public int getShieldCharge()
@@ -285,6 +348,26 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 			{
 				gainShieldCharge();
 			}
+		}
+		else if(e.GetType().Name.Equals("CollectPower"))
+		{
+			int type = ((CollectPower) e).getPowerupType();
+			if(type == 1)
+			{
+				Debug.Log("Plus shield");
+				gainShield();
+			}
+			else if(type == 2)
+			{
+				Debug.Log("Plus damage");
+				gainDamage();
+			}
+			else if(type == 3)
+			{
+				Debug.Log("Plus rateOfFire");
+				gainRateofFire();
+			}
+	
 		}
 	}
 }

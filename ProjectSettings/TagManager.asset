@@ -15,6 +15,8 @@ TagManager:
   - Asteroid
   - RockSpawner
   - 
+  - HealthBar
+  - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
   Builtin Layer 2: Ignore Raycast
@@ -27,9 +29,9 @@ TagManager:
   User Layer 9: Characters
   User Layer 10: Background
   User Layer 11: Foreground
-  User Layer 12: 
-  User Layer 13: 
-  User Layer 14: 
+  User Layer 12: Enemies
+  User Layer 13: Missiles
+  User Layer 14: Buffer
   User Layer 15: 
   User Layer 16: 
   User Layer 17: 
