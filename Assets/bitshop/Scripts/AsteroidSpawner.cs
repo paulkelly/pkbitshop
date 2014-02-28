@@ -12,6 +12,9 @@ public class AsteroidSpawner : MonoBehaviour {
 	public float minRespawnTime = 1f;
 	public float maxRespawnTime = 1.2f;
 
+	public float minScale = 0.7f;
+	public float maxScale = 1.2f;
+
 	public float minTorque = -5f;
 	public float maxTorque = 5f;
 
@@ -38,6 +41,9 @@ public class AsteroidSpawner : MonoBehaviour {
 			GameObject asteroidInstance = (GameObject) Instantiate(asteroid, position, Quaternion.identity);
 			asteroidInstance.GetComponent<Asteroid>().rigidbody2D.velocity = velocity;
 			asteroidInstance.GetComponent<Asteroid>().rigidbody2D.AddTorque(Random.Range(minTorque, maxTorque));
+			float scale = Random.Range(minScale, maxScale);
+			asteroidInstance.GetComponent<Asteroid>().transform.localScale = new Vector3(scale, scale, 1);
+			Destroy(asteroidInstance, 3f);
 		}
 	}
 }

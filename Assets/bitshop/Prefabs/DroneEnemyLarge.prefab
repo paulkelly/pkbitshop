@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: center_inactive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ GameObject:
   - 114: {fileID: 11400002}
   - 82: {fileID: 8200000}
   - 114: {fileID: 11400004}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: DroneEnemyLarge
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 212: {fileID: 21200004}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: healthTexture1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - 4: {fileID: 400006}
   - 212: {fileID: 21200006}
   - 114: {fileID: 11400006}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,8 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66278dfe378b23e47ae4771e0e713582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 8000
-  maxHealth: 30
+  bounceForce: 5000
+  maxHealth: 45
   health: 45
   explosion: {fileID: 100000, guid: e56e8ffe8511c2342bca3e2adfd00a10, type: 2}
   powerups:
@@ -237,6 +237,8 @@ MonoBehaviour:
   - {fileID: 100000, guid: f93d237374cec2941b4e8b3c179a2dc3, type: 2}
   - {fileID: 100000, guid: 120dbbc2f3a8541409c84aaa5697cefd, type: 2}
   powerDropChange: 66
+  colliderTakesDamage: 1
+  bossEye: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -277,7 +279,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   speedInactive: 1.5
-  speedActive: 9
+  minSpeedActive: 10
+  maxSpeedActive: 11
   minActiveDelay: 4
   maxActivateDelay: 6
   maxLockCooldown: .5

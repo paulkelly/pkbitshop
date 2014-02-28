@@ -14,6 +14,9 @@ public class Enemy : MonoBehaviour {
 	public GameObject[] powerups;
 	public float powerDropChange = 33f;
 
+	public bool colliderTakesDamage = true;
+	public GameObject bossEye;
+
 	Animator anim;	
 	public ShipSounds shipSounds { get; set; }
 
@@ -24,7 +27,7 @@ public class Enemy : MonoBehaviour {
 		health = maxHealth;
 	}
 
-	void takeDamage(float amount)
+	public void takeDamage(float amount)
 	{
 		health -= amount;
 		if(health < 0)
@@ -39,9 +42,17 @@ public class Enemy : MonoBehaviour {
 
 	public void kill()
 	{
+		if(dead) return;
 		shipSounds.playDeath();
 		anim.SetTrigger("Death");
-		Invoke("Death", 0.5f);
+		if(!colliderTakesDamage)
+		{
+			Invoke("Death", 0f);
+		}
+		else
+		{
+			Invoke("Death", 0.2f);
+		}
 		rigidbody2D.velocity = Vector2.zero;
 		dead = true;
 
@@ -53,14 +64,29 @@ public class Enemy : MonoBehaviour {
 				Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position, Quaternion.identity);
 			}
 		}
+
+		if(colliderTakesDamage)
+		{
 		var expl = Instantiate(explosion, transform.position, Quaternion.identity);
-		Destroy(gameObject); // destroy the grenade
 		Destroy(expl, 1); // delete the explosion after 1 second
+		}
+		else
+		{
+			var expl = Instantiate(explosion, bossEye.transform.position, Quaternion.identity);
+			Destroy(expl, 3); // delete the explosion after 1 second
+		}
 	}
 
 	void Death()
 	{
-		Destroy(this.gameObject);
+		if(colliderTakesDamage)
+		{
+			Destroy(this.gameObject);
+		}
+		else
+		{
+			Destroy (bossEye);
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collider)
@@ -74,13 +100,18 @@ public class Enemy : MonoBehaviour {
 			                                transform.position.y - collider.transform.position.y);
 			rigidbody2D.velocity = new Vector2(0, 0);
 			rigidbody2D.AddForce(direction * bounceForce);
+
+			CameraShake cameraShakeEvent = new CameraShake (0.1f, 0.15f);
+			GameEvents.GameEventManager.post (cameraShakeEvent);
+
+			if(colliderTakesDamage) takeDamage(3);
 		}
 
 	}
 
 	void OnTriggerEnter2D(Collider2D collider)
 	{
-		if(collider.gameObject.tag.Equals ("Bullet"))
+		if(colliderTakesDamage && collider.gameObject.tag.Equals ("Bullet"))
 		{
 			if(collider.gameObject.GetComponent<Bullet>().isPlayerBullet())
 			{

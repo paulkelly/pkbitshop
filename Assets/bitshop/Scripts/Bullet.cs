@@ -47,7 +47,8 @@ public class Bullet : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D collider)
 	{
-		if (playerBullet && collider.gameObject.tag.Equals ("PlayerShip") || collider.isTrigger)
+
+		if (playerBullet && collider.tag.Equals ("PlayerShip") || (collider.isTrigger && !collider.tag.Equals ("Boss")))
 		{
 			return;
 		}

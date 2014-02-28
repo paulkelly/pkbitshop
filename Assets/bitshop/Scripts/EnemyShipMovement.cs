@@ -86,15 +86,15 @@ public class EnemyShipMovement : MonoBehaviour {
 				rigidbody2D.AddForce(direction * accelerationForce);
 				needNewTarget = false;
 			}
+		}
 
-			if(facingRight && player.transform.position.x < transform.position.x)
-			{
-				Flip ();
-			}
-			else if(!facingRight && player.transform.position.x > transform.position.x)
-			{
-				Flip ();
-			}
+		if(facingRight && player.transform.position.x < transform.position.x)
+		{
+			Flip ();
+		}
+		else if(!facingRight && player.transform.position.x > transform.position.x)
+		{
+			Flip ();
 		}
 	}
 

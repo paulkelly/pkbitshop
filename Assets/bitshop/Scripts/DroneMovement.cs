@@ -6,7 +6,10 @@ public class DroneMovement : MonoBehaviour {
 	public bool facingRight = true;
 
 	public float speedInactive = 1f;
-	public float speedActive = 7f;
+	float speedActive = 7f;
+
+	public float minSpeedActive = 6f;
+	public float maxSpeedActive = 10f;
 		
 	public float minActiveDelay = 3f;
 	public float maxActivateDelay = 5f;
@@ -30,10 +33,18 @@ public class DroneMovement : MonoBehaviour {
 		
 		activateDelay = Random.Range (minActiveDelay-3f, maxActivateDelay-3f);
 		anim = GetComponent<Animator>();
+
+		speedActive = Random.Range (minSpeedActive, maxSpeedActive);
 	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
+		float distance = transform.position.x - targetX;
+		if(distance > 0f && distance < 1f || distance < 0f && distance > -1f)
+		{
+			needLockOn = true;
+		}
+
 		if(anim.GetCurrentAnimatorStateInfo(0).IsName("droneDeath"))
 		{
 			rigidbody2D.velocity = Vector2.zero;
@@ -43,7 +54,7 @@ public class DroneMovement : MonoBehaviour {
 		if (anim.GetCurrentAnimatorStateInfo (0).IsName ("activate")) 
 		{		
 			speed = speedActive;
-			
+
 			if(lockCooldown <= 0 || needLockOn)
 			{
 				targetX = target.transform.position.x;

@@ -32,6 +32,9 @@ public class Asteroid : MonoBehaviour {
 		{
 			DamagePlayer damagePlayerEvent = new DamagePlayer (transform.gameObject, 1, false);
 			GameEvents.GameEventManager.post (damagePlayerEvent);
+
+			CameraShake cameraShakeEvent = new CameraShake (0.1f, 0.15f);
+			GameEvents.GameEventManager.post (cameraShakeEvent);
 		}
 		
 	}

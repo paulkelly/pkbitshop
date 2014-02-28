@@ -14,6 +14,9 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 	const float NORMAL_ASPECT = 4/3f;
 	const float COMPUTER_WIDE_ASPECT = 16/10f;
 	const float EPSILON = 0.01f;
+
+	float jiggleAmt = 0f;
+	bool shake = false;
 	
 	void Start ()
 	{
@@ -33,7 +36,20 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 
 	void Update ()
 	{
-		TrackTarget();
+		if(jiggleAmt>0)
+		{
+			float quakeAmt = Random.value*jiggleAmt*2 - jiggleAmt;
+			Vector3 pp = transform.position;
+			pp.y+= quakeAmt; // can also add to x and/or z
+
+			quakeAmt = Random.value*jiggleAmt*2 - jiggleAmt;
+			pp.x+= quakeAmt;
+			transform.position = pp;
+		}
+		else
+		{
+			TrackTarget();
+		}
 	}
 
 	void TrackTarget ()
@@ -50,6 +66,7 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 
 		// Set the camera's position to the target position with the same z component.
 		transform.position = new Vector3(targetX, targetY, transform.position.z);
+
 	}
 
 	public void receiveEvent(GameEvents.GameEvent e)
@@ -58,6 +75,17 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 		{
 			target = ((EnterRoom) e).getNewRoom();
 		}
+		if(e.GetType ().Name.Equals("CameraShake"))
+		{
+			jiggleAmt = ((CameraShake) e).getAmount();
+			StartCoroutine(jiggleCam2(((CameraShake) e).getDuration()));
+		}
 		
 	}
+
+	IEnumerator jiggleCam2(float duration) {
+		yield return new WaitForSeconds(duration);
+		jiggleAmt=0;
+	}
+
 }

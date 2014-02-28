@@ -28,7 +28,14 @@ namespace GameEvents
 			foreach(WeakReference wref in alive_list)
 			{           
 				//call eventReceived on the listener
+				try{
+
 				(wref.Target as GameEventListener).receiveEvent(e);
+				}
+				catch(Exception exception)
+				{
+
+				}
 			}         
 		}
 		

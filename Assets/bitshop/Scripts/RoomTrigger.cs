@@ -16,15 +16,9 @@ public class RoomTrigger : MonoBehaviour {
 	{
 		for(int i=0; i<transform.childCount; i++)
 		{
-			if(transform.GetChild(i).tag.Equals("Enemy"))
-			{
-				transform.GetChild(i).gameObject.SetActive(false);
-			}
-		}
-
-		for(int i=0; i<transform.childCount; i++)
-		{
-			if(transform.GetChild(i).tag.Equals("RockSpawner"))
+			if(transform.GetChild(i).tag.Equals("Enemy") ||
+			   transform.GetChild(i).tag.Equals("RockSpawner") ||
+			   transform.GetChild(i).tag.Equals("Boss"))
 			{
 				transform.GetChild(i).gameObject.SetActive(false);
 			}
@@ -40,6 +34,10 @@ public class RoomTrigger : MonoBehaviour {
 			{
 				if(obj != null) enemyCount ++;
 			}
+			for(int i=0; i<transform.childCount; i++)
+			{
+				if(transform.GetChild(i).tag.Equals("Boss")) enemyCount++;
+			}
 			if(enemyCount <= 0)
 			{
 				unblockRoom();
@@ -49,21 +47,25 @@ public class RoomTrigger : MonoBehaviour {
 
 	void blockRoom()
 	{
-		int enemies = 0;
+		int enemyCount = 0;
 		for(int i=0; i<transform.childCount; i++)
 		{
 			if(transform.GetChild(i).tag.Equals("Spawner"))
 			{
 				EnemySpawner spawner = transform.GetChild(i).GetComponent<EnemySpawner>();
 				SpawnEnemy(spawner.GetEnemy(), transform.GetChild (i).position);
-				enemies++;
+				enemyCount++;
 			}
 		}
 
-		if (enemies > 0)
+		for(int i=0; i<transform.childCount; i++)
+		{
+			if(transform.GetChild(i).tag.Equals("Boss")) enemyCount++;
+		}
+
+		if (enemyCount > 0)
 		{
 			blocked = true;
-			Debug.Log ("Blocking room");
 			Vector3 position = new Vector3 (transform.position.x - 20.8f, transform.position.y, transform.position.z + 1);
 			GameObject blocker = (GameObject) Instantiate(blockerObj, position, Quaternion.identity);
 			blockers.Add (blocker);
@@ -90,7 +92,6 @@ public class RoomTrigger : MonoBehaviour {
 
 	void unblockRoom()
 	{
-		Debug.Log ("unblocking room");
 		blocked = false;
 
 		foreach(GameObject obj in blockers)
@@ -115,10 +116,7 @@ public class RoomTrigger : MonoBehaviour {
 
 			for(int i=0; i<transform.childCount; i++)
 			{
-				if(transform.GetChild(i).tag.Equals("RockSpawner"))
-				{
-					transform.GetChild(i).gameObject.SetActive(true);
-				}
+				transform.GetChild(i).gameObject.SetActive(true);
 			}
 		}
 	}
@@ -143,6 +141,9 @@ public class RoomTrigger : MonoBehaviour {
 		{
 			DamagePlayer damagePlayerEvent = new DamagePlayer (transform.gameObject, 1, true);
 			GameEvents.GameEventManager.post (damagePlayerEvent);
+
+			CameraShake cameraShakeEvent = new CameraShake ();
+			GameEvents.GameEventManager.post (cameraShakeEvent);
 		}
 	}
 }

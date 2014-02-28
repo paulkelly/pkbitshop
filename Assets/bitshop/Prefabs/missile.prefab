@@ -53,7 +53,7 @@ GameObject:
   - 114: {fileID: 11400004}
   m_Layer: 13
   m_Name: missile
-  m_TagString: Enemy
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 1
@@ -227,8 +227,8 @@ MonoBehaviour:
   maxShieldVolume: 1
   death:
   - {fileID: 8300000, guid: 28b8cb8724da0e44483cb6debaf79f65, type: 3}
-  minDeathVolume: .25
-  maxDeathVolume: 1
+  minDeathVolume: .400000006
+  maxDeathVolume: .699999988
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -241,8 +241,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bounceForce: 8000
+  maxHealth: 30
   health: 1
   explosion: {fileID: 100000, guid: 74bbe492c8c97ff4b9417ae61472a205, type: 2}
+  powerups: []
+  powerDropChange: 33
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -258,7 +261,7 @@ MonoBehaviour:
   background:
     serializedVersion: 2
     m_Bits: 1024
-  accelerationForce: 300
+  accelerationForce: 1000
   maxVelocity: 100
   maxTurnSpeed: .0149999997
 --- !u!198 &19800000

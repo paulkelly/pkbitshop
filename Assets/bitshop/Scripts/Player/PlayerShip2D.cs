@@ -13,8 +13,10 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 
 	public GameObject GunshotParticleEffect;
 
-	private static int fireRateLevel = 0;
-	private static int damageLevel = 0;
+	public GameObject explosion;
+
+	public int fireRateLevel = 0;
+	public int damageLevel = 0;
 	
 	bool isShieldDisabling = false;
 	bool isShieldEnabling = false;
@@ -26,10 +28,10 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	private int shieldCharge = 0;
 	private int shieldMaxCharge = 3;
 
-	private float fireRate = fireRateProgress[fireRateLevel]; // The number of times the player can shoot in 1 second.
+	private float fireRate; // The number of times the player can shoot in 1 second.
 	private float cooldown = 0f;
 	bool shooting = false;
-	private float damage = damageProgress[damageLevel]; // The number of damage the player deals per shot.
+	private float damage; // The number of damage the player deals per shot.
 
 	Animator anim;										// Reference to the player's animator component.
 	ShipSounds shipSounds;
@@ -42,13 +44,14 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		GameEvents.GameEventManager.registerListener(this);
 		anim = GetComponent<Animator>();
 		shipSounds = GetComponent<ShipSounds>();
+
+		fireRate = fireRateProgress[fireRateLevel]; // The number of times the player can shoot in 1 second.
+		damage = damageProgress[damageLevel]; // The number of damage the player deals per shot.
 	}
 
 	void Start()
 	{
 		bulletManager = BulletManager.getInstance();
-		UpdateHud updateHudEvent = new UpdateHud ();
-		GameEvents.GameEventManager.post (updateHudEvent);
 	}
 
 	void Update()
@@ -127,7 +130,6 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	{
 		for(int i=0; i<transform.childCount; i++)
 		{
-			Debug.Log("Found Child");
 			for(int j=0; j<transform.GetChild(i).childCount; j++)
 			{
 				if(transform.GetChild(i).GetChild(j).tag.Equals("BulletSpawn"))
@@ -194,7 +196,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		anim.SetTrigger("Shoot");
 		shipSounds.PlayGunshot ();
 		Vector2 playerDirection = rigidbody2D.velocity;
-		float curveDapening = (maxSpeed * 2);
+		float curveDapening = (maxSpeed * 3);
 		Vector3 playerDirectionx = new Vector3 (playerDirection.x, 0, 0) / curveDapening;
 		Vector3 playerDirectiony = new Vector3 (0, playerDirection.y, 0) / curveDapening;
 
@@ -244,11 +246,23 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		}
 		else
 		{
+			anim.SetTrigger("Death");
+			var expl = Instantiate(explosion, transform.position, Quaternion.identity);
+			Destroy(gameObject); // destroy the grenade
+			Destroy(expl, 1); // delete the explosion after 1 second
 			shipSounds.playDeath();
-			Debug.Break();
+			//Invoke ("EndGame", 0.5f);
+			EndGame();
 		}
 		UpdateHud updateHudEvent = new UpdateHud ();
 		GameEvents.GameEventManager.post (updateHudEvent);
+	}
+
+	void EndGame()
+	{
+		Debug.Log ("invoked end game");
+		Restart restart = new Restart ();
+		GameEvents.GameEventManager.post (restart);
 	}
 
 	void gainShield()
