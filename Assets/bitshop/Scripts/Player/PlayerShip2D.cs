@@ -199,13 +199,18 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		float curveDapening = (maxSpeed * 3);
 		Vector3 playerDirectionx = new Vector3 (playerDirection.x, 0, 0) / curveDapening;
 		Vector3 playerDirectiony = new Vector3 (0, playerDirection.y, 0) / curveDapening;
+		
+		Vector3 shot2 = new Vector3(0, 0.04f, 0);
+		Vector3 shot3 = new Vector3(0, -0.04f, 0);
 
 		Vector3 bulletDirection = Vector3.down + playerDirectionx;
 		if (direction.Equals (Direction.LEFT))
 		{
 			bulletDirection = Vector3.left + playerDirectiony;
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection, true, damage);
-
+			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot2, true, damage);
+			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot3, true, damage);
+			
 			if(facingRight)
 				Flip();
 		}
@@ -213,6 +218,8 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		{
 			bulletDirection = Vector3.right + playerDirectiony;
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection, true, damage);
+			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot2, true, damage);
+			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot3, true, damage);
 
 			if(!facingRight)
 				Flip();

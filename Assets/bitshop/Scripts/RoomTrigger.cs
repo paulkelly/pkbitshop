@@ -66,11 +66,11 @@ public class RoomTrigger : MonoBehaviour {
 		if (enemyCount > 0)
 		{
 			blocked = true;
-			Vector3 position = new Vector3 (transform.position.x - 20.8f, transform.position.y, transform.position.z + 1);
+			Vector3 position = new Vector3 (transform.position.x - 20f, transform.position.y, transform.position.z + 1);
 			GameObject blocker = (GameObject) Instantiate(blockerObj, position, Quaternion.identity);
 			blockers.Add (blocker);
 
-			position = new Vector3 (transform.position.x + 20.8f, transform.position.y, transform.position.z + 1);
+			position = new Vector3 (transform.position.x + 20f, transform.position.y, transform.position.z + 1);
 			blocker = (GameObject) Instantiate(blockerObj, position, Quaternion.identity);
 			blockers.Add (blocker);
 
