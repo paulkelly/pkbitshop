@@ -90,7 +90,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 72.7653275, y: -21.4300652, z: 0}
+  m_LocalPosition: {x: 12.9391346, y: 1.89959371, z: 0}
   m_LocalScale: {x: .5, y: .5, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66278dfe378b23e47ae4771e0e713582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 4000
+  bounceForce: 2000
   maxHealth: 18
   health: 10
   explosion: {fileID: 100000, guid: e56e8ffe8511c2342bca3e2adfd00a10, type: 2}
@@ -236,7 +236,7 @@ MonoBehaviour:
   - {fileID: 100000, guid: 0d88ec013e83a4b439ae8ac8568190d2, type: 2}
   - {fileID: 100000, guid: f93d237374cec2941b4e8b3c179a2dc3, type: 2}
   - {fileID: 100000, guid: 120dbbc2f3a8541409c84aaa5697cefd, type: 2}
-  powerDropChange: 15
+  powerDropChange: 5
   colliderTakesDamage: 1
   bossEye: {fileID: 0}
 --- !u!114 &11400002
@@ -279,10 +279,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   speedInactive: 1
-  minSpeedActive: 5.5
-  maxSpeedActive: 7.5
-  minActiveDelay: 2
-  maxActivateDelay: 6
+  minSpeedActive: 4.5
+  maxSpeedActive: 6.5
+  minActiveDelay: 1
+  maxActivateDelay: 2
   maxLockCooldown: .5
   minLockCooldown: .300000012
 --- !u!114 &11400006

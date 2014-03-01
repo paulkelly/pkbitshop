@@ -44,6 +44,11 @@ public class DroneMovement : MonoBehaviour {
 		{
 			needLockOn = true;
 		}
+		distance = transform.position.y - targetY;
+		if(distance > 0f && distance < 1f || distance < 0f && distance > -1f)
+		{
+			needLockOn = true;
+		}
 
 		if(anim.GetCurrentAnimatorStateInfo(0).IsName("droneDeath"))
 		{
@@ -55,13 +60,13 @@ public class DroneMovement : MonoBehaviour {
 		{		
 			speed = speedActive;
 
-			if(lockCooldown <= 0 || needLockOn)
+			if(lockCooldown <= 0)
 			{
 				targetX = target.transform.position.x;
-				targetY = target.transform.position.y;
+				targetY = target.transform.position.y + Random.Range(-1f, 1f);
 				
 				lockCooldown = Random.Range(minLockCooldown, maxLockCooldown);
-				needLockOn = false;
+
 			}
 			else
 			{
@@ -70,19 +75,18 @@ public class DroneMovement : MonoBehaviour {
 		}
 		else
 		{
-			needLockOn = true;
+			if(activateDelay <= 0)
+			{
+				anim.SetTrigger("Activate");
+				activateDelay = Random.Range (minActiveDelay, maxActivateDelay);
+			}
+			else
+			{
+				activateDelay -= Time.deltaTime;
+			}
+			lockCooldown = 0f;
 		}
 		
-		
-		if(activateDelay <= 0)
-		{
-			anim.SetTrigger("Activate");
-			activateDelay = Random.Range (minActiveDelay, maxActivateDelay);
-		}
-		else
-		{
-			activateDelay -= Time.deltaTime;
-		}
 		
 		rigidbody2D.velocity = new Vector2 (targetX - transform.position.x, targetY - transform.position.y);
 		

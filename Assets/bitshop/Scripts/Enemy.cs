@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour {
 
 	public void takeDamage(float amount)
 	{
+		anim.SetTrigger("Damage");
 		health -= amount;
 		if(health < 0)
 		{
@@ -51,7 +52,7 @@ public class Enemy : MonoBehaviour {
 		}
 		else
 		{
-			Invoke("Death", 0.2f);
+			Invoke("Death", 0.5f);
 		}
 		rigidbody2D.velocity = Vector2.zero;
 		dead = true;

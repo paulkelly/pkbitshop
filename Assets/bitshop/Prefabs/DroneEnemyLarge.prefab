@@ -228,15 +228,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66278dfe378b23e47ae4771e0e713582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 5000
-  maxHealth: 45
+  bounceForce: 2500
+  maxHealth: 55
   health: 45
   explosion: {fileID: 100000, guid: e56e8ffe8511c2342bca3e2adfd00a10, type: 2}
   powerups:
   - {fileID: 100000, guid: 0d88ec013e83a4b439ae8ac8568190d2, type: 2}
   - {fileID: 100000, guid: f93d237374cec2941b4e8b3c179a2dc3, type: 2}
   - {fileID: 100000, guid: 120dbbc2f3a8541409c84aaa5697cefd, type: 2}
-  powerDropChange: 66
+  powerDropChange: 33
   colliderTakesDamage: 1
   bossEye: {fileID: 0}
 --- !u!114 &11400002
@@ -281,8 +281,8 @@ MonoBehaviour:
   speedInactive: 1.5
   minSpeedActive: 10
   maxSpeedActive: 11
-  minActiveDelay: 4
-  maxActivateDelay: 6
+  minActiveDelay: 1
+  maxActivateDelay: 2
   maxLockCooldown: .5
   minLockCooldown: .300000012
 --- !u!114 &11400006

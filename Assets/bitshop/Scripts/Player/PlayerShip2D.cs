@@ -8,8 +8,8 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 
 	[SerializeField] float maxSpeed = 10f;		// The fastest the player can travel in the x axis.
 	
-	[SerializeField] public static float[] fireRateProgress = {2f, 2.5f, 3f, 3.5f, 4f};	
-	[SerializeField] public static float[] damageProgress = {4f, 5f, 6f, 8f, 10f};
+	[SerializeField] public static float[] fireRateProgress = {2f, 2.4f, 3.6f, 3f, 3.5f, 4f, 4.5f, 5f, 5.5f, 6f};	
+	[SerializeField] public static float[] damageProgress = {3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f};
 
 	public GameObject GunshotParticleEffect;
 
@@ -38,6 +38,8 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	BulletManager bulletManager;
 
 	public float bounceForce = 10000f;
+	
+	private bool has5Shot = false;
 
     void Awake()
 	{
@@ -210,7 +212,11 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection, true, damage);
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot2, true, damage);
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot3, true, damage);
-			
+			if(has5Shot)
+			{
+				bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + 2*shot2, true, damage);
+				bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + 2*shot3, true, damage);
+			}
 			if(facingRight)
 				Flip();
 		}
@@ -220,7 +226,11 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection, true, damage);
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot2, true, damage);
 			bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + shot3, true, damage);
-
+			if(has5Shot)
+			{
+				bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + 2*shot2, true, damage);
+				bulletManager.spawnBullet (getBulletSpawnPoint().position, bulletDirection + 2*shot3, true, damage);
+			}
 			if(!facingRight)
 				Flip();
 		}
@@ -375,18 +385,19 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 			int type = ((CollectPower) e).getPowerupType();
 			if(type == 1)
 			{
-				Debug.Log("Plus shield");
 				gainShield();
 			}
 			else if(type == 2)
 			{
-				Debug.Log("Plus damage");
 				gainDamage();
 			}
 			else if(type == 3)
 			{
-				Debug.Log("Plus rateOfFire");
 				gainRateofFire();
+			}
+			else if(type == 4)
+			{
+				has5Shot = true;
 			}
 	
 		}

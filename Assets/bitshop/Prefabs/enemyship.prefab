@@ -91,7 +91,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.69476748, y: .874867082, z: 0}
+  m_LocalPosition: {x: 205.32251, y: -30.6594524, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400006}
@@ -126,7 +126,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 1
   m_AngularDrag: .0500000007
   m_GravityScale: 0
@@ -313,8 +313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66278dfe378b23e47ae4771e0e713582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 4000
-  maxHealth: 30
+  bounceForce: 200
+  maxHealth: 35
   health: 30
   explosion: {fileID: 100000, guid: e56e8ffe8511c2342bca3e2adfd00a10, type: 2}
   powerups:
@@ -322,6 +322,8 @@ MonoBehaviour:
   - {fileID: 100000, guid: f93d237374cec2941b4e8b3c179a2dc3, type: 2}
   - {fileID: 100000, guid: 120dbbc2f3a8541409c84aaa5697cefd, type: 2}
   powerDropChange: 33
+  colliderTakesDamage: 1
+  bossEye: {fileID: 0}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
