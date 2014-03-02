@@ -10,12 +10,12 @@ PlayerSettings:
   targetGlesGraphics: 1
   targetResolution: 0
   accelerometerFrequency: 60
-  companyName: Unity
-  productName: Sample Assets
+  companyName: Paul Kelly
+  productName: BitZero
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   defaultScreenWidth: 1024
-  defaultScreenHeight: 768
+  defaultScreenHeight: 720
   defaultScreenWidthWeb: 1024
   defaultScreenHeightWeb: 576
   m_RenderingPath: 1
@@ -68,11 +68,11 @@ PlayerSettings:
     width: 0
     height: 0
   m_SupportedAspectRatios:
-    4:3: 1
-    5:4: 1
+    4:3: 0
+    5:4: 0
     16:10: 1
     16:9: 1
-    Others: 1
+    Others: 0
   iPhoneBundleIdentifier: com.unity3d.tester
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0

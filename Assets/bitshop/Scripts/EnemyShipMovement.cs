@@ -25,8 +25,11 @@ public class EnemyShipMovement : MonoBehaviour {
 
 	Vector2 evadeTarget;
 	bool needNewTarget = true;
+	
+	public bool smartAI = false;
 
 	Enemy enemyScript;
+	public float movementLerpTime = 0.05f;
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +45,12 @@ public class EnemyShipMovement : MonoBehaviour {
 		if (anim.GetCurrentAnimatorStateInfo(0).IsName("enemyShipIdle"))
 		{
 			needNewTarget = true;
+			
+			if(smartAI)
+			{
+				Vector3 target = Vector3.Lerp(transform.position, player.transform.position, movementLerpTime);
+				transform.position = new Vector3(transform.position.x, target.y, transform.position.z);
+			}
 
 			if(shootCooldown > 0f)
 			{
@@ -51,6 +60,7 @@ public class EnemyShipMovement : MonoBehaviour {
 			{
 				Shoot();
 				shootCooldown = Random.Range(minShootCooldown, maxShootCooldown);
+				anim.SetTrigger("Evade");
 			}
 		}
 		else if (anim.GetCurrentAnimatorStateInfo(0).IsName("enemyShipEvade"))

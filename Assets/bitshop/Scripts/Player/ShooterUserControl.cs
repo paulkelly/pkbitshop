@@ -41,16 +41,7 @@ public class ShooterUserControl : MonoBehaviour
 			shooting = true;
 			shootDirection = Direction.RIGHT;
 		} 
-		else if (CrossPlatformInput.GetButton("FireUp"))
-		{
-			shooting = true;
-			shootDirection = Direction.UP;
-		} 
-		else if (CrossPlatformInput.GetButton("FireDown"))
-		{
-			shooting = true;
-			shootDirection = Direction.DOWN;
-		}
+
 		#else
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");

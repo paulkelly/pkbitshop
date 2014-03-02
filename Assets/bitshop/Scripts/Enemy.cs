@@ -105,7 +105,7 @@ public class Enemy : MonoBehaviour {
 			CameraShake cameraShakeEvent = new CameraShake (0.1f, 0.15f);
 			GameEvents.GameEventManager.post (cameraShakeEvent);
 
-			if(colliderTakesDamage) takeDamage(3);
+			if(colliderTakesDamage) takeDamage(1);
 		}
 
 	}

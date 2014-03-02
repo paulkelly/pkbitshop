@@ -12,7 +12,7 @@ public class Restarter : MonoBehaviour, GameEvents.GameEventListener {
 	{
 		if(e.GetType().Name.Equals("Restart"))
 		{
-			Application.LoadLevel(1);
+			Application.LoadLevel(2);
 		}
 		if(e.GetType().Name.Equals("Win"))
 		{
@@ -22,7 +22,7 @@ public class Restarter : MonoBehaviour, GameEvents.GameEventListener {
 
 	void TriggerWin()
 	{
-		Application.LoadLevel(2);
+		Application.LoadLevel(3);
 	}
 
 	void onDestroy()
@@ -32,10 +32,9 @@ public class Restarter : MonoBehaviour, GameEvents.GameEventListener {
 
 	void Update()
 	{
-		if(CrossPlatformInput.GetButton("Enter")) Debug.Log ("Enter pressed");
-		if(CrossPlatformInput.GetButton("Enter") && Application.loadedLevel != 0)
+		if(CrossPlatformInput.GetButton("Enter") && Application.loadedLevel != 1)
 		{
-			Application.LoadLevel(0);
+			Application.LoadLevel(1);
 		}
 	}
 }

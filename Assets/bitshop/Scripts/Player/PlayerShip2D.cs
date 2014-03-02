@@ -9,7 +9,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	[SerializeField] float maxSpeed = 10f;		// The fastest the player can travel in the x axis.
 	
 	[SerializeField] public static float[] fireRateProgress = {2f, 2.4f, 3.6f, 3f, 3.5f, 4f, 4.5f, 5f, 5.5f, 6f};	
-	[SerializeField] public static float[] damageProgress = {3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f};
+	[SerializeField] public static float[] damageProgress = {3f, 3.3f, 3.6f, 4f, 4.3f, 4.6f, 5f, 5.5f, 6f, 6.5f};
 
 	public GameObject GunshotParticleEffect;
 
@@ -40,6 +40,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 	public float bounceForce = 10000f;
 	
 	private bool has5Shot = false;
+	
 
     void Awake()
 	{
@@ -317,6 +318,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 
 	void gainShieldCharge()
 	{
+		shipSounds.playShieldUp(shieldCharge);
 		shieldCharge++;
 		if(shieldCharge >= shieldMaxCharge)
 		{
@@ -382,6 +384,7 @@ public class PlayerShip2D : MonoBehaviour, GameEvents.GameEventListener
 		}
 		else if(e.GetType().Name.Equals("CollectPower"))
 		{
+			shipSounds.playPowerup();
 			int type = ((CollectPower) e).getPowerupType();
 			if(type == 1)
 			{

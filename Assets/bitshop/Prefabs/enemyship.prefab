@@ -91,7 +91,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 205.32251, y: -30.6594524, z: 0}
+  m_LocalPosition: {x: 11.2240992, y: .184761852, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400006}
@@ -265,13 +265,15 @@ MonoBehaviour:
   player: {fileID: 0}
   missile: {fileID: 100004, guid: 5b28d28c7775ceb4e84fc57044711283, type: 2}
   maxSpeed: 50
-  accelerationForce: 300
-  minXEvade: .300000012
-  maxXEvade: 1
-  minYEvade: .300000012
-  maxYEvade: 1
-  minShootCooldown: 1.5
-  maxShootCooldown: 3
+  accelerationForce: 800
+  minXEvade: 1
+  maxXEvade: 3
+  minYEvade: 1
+  maxYEvade: 3
+  minShootCooldown: 2.5
+  maxShootCooldown: 4.5
+  smartAI: 0
+  movementLerpTime: .00999999978
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,6 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c1a01a4bb2cf548b94ef406a88bfce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alwaysShow: 0
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

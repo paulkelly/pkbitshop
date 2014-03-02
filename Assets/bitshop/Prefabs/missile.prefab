@@ -246,6 +246,8 @@ MonoBehaviour:
   explosion: {fileID: 100000, guid: 74bbe492c8c97ff4b9417ae61472a205, type: 2}
   powerups: []
   powerDropChange: 33
+  colliderTakesDamage: 1
+  bossEye: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -261,7 +263,7 @@ MonoBehaviour:
   background:
     serializedVersion: 2
     m_Bits: 1024
-  accelerationForce: 1000
+  accelerationForce: 1500
   maxVelocity: 100
   maxTurnSpeed: .0149999997
 --- !u!198 &19800000

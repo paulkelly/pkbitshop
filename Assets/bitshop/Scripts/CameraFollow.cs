@@ -18,6 +18,8 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 	float jiggleAmt = 0f;
 	bool shake = false;
 	
+	Vector3 lastPosition = Vector3.zero;
+	
 	void Start ()
 	{
 		GameEvents.GameEventManager.registerListener(this);
@@ -50,6 +52,17 @@ public class CameraFollow : MonoBehaviour, GameEvents.GameEventListener
 		{
 			TrackTarget();
 		}
+	}
+	
+	void FixedUpdate()
+	{
+		float movementX = transform.position.x - lastPosition.x;
+		float movementY = transform.position.y - lastPosition.y;
+		
+		BackgroundScrollEvent scroll = new BackgroundScrollEvent (movementX, movementY);
+		GameEvents.GameEventManager.post (scroll);
+		
+		lastPosition = transform.position;
 	}
 
 	void TrackTarget ()

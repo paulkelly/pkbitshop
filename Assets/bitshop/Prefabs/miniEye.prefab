@@ -30,7 +30,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 137.721634, y: 38.1654091, z: 3}
+  m_LocalPosition: {x: 284.579102, y: -4.29174328, z: 3}
   m_LocalScale: {x: .200000003, y: .200000003, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,8 +149,8 @@ MonoBehaviour:
   maxSpeedActive: 10
   minActiveDelay: .300000012
   maxActivateDelay: 7
-  maxLockCooldown: 3
-  minLockCooldown: 1
+  maxLockCooldown: 1
+  minLockCooldown: .600000024
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -168,16 +168,30 @@ MonoBehaviour:
   minGunshotVolume: .25
   maxGunshotVolume: .5
   takeDamage:
-  - {fileID: 8300000, guid: 13e7a8f9cb617fb42b04115a0df95640, type: 3}
-  minDmgVolume: .5
-  maxDmgVolume: 1
+  - {fileID: 8300000, guid: 4573c2963482903458438082990f1319, type: 3}
+  - {fileID: 8300000, guid: d81b65ed534aa4b459a6ddf0529297a7, type: 3}
+  - {fileID: 8300000, guid: 7e9f541fb6d471347bd480aba719197b, type: 3}
+  - {fileID: 8300000, guid: 68c41acd36846244eafce1d1e04e0568, type: 3}
+  - {fileID: 8300000, guid: e4424a69a951ebe40b6ada3f140399df, type: 3}
+  minDmgVolume: .25
+  maxDmgVolume: .5
   takeShieldDamage: []
   minShieldVolume: .800000012
   maxShieldVolume: 1
   death:
-  - {fileID: 8300000, guid: 28b8cb8724da0e44483cb6debaf79f65, type: 3}
+  - {fileID: 8300000, guid: 4573c2963482903458438082990f1319, type: 3}
+  - {fileID: 8300000, guid: d81b65ed534aa4b459a6ddf0529297a7, type: 3}
+  - {fileID: 8300000, guid: 7e9f541fb6d471347bd480aba719197b, type: 3}
+  - {fileID: 8300000, guid: 68c41acd36846244eafce1d1e04e0568, type: 3}
+  - {fileID: 8300000, guid: e4424a69a951ebe40b6ada3f140399df, type: 3}
   minDeathVolume: .5
   maxDeathVolume: 1
+  shieldCharge: []
+  minshieldChargeVolume: .449999988
+  maxshieldChargeVolume: .600000024
+  powerup: []
+  minPowerupVolume: .800000012
+  maxPowerupVolume: 1
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

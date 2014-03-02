@@ -199,7 +199,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 6200000, guid: 8be6341e1ce3f4cec9902bc34f72d20a, type: 2}
   m_IsTrigger: 0
-  m_Radius: .720000029
+  m_Radius: .709999979
   m_Center: {x: .0500000007, y: .0500000007}
 --- !u!60 &6000000
 PolygonCollider2D:
@@ -212,14 +212,14 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_Poly:
     m_Paths:
-    - - {x: -1.18807399, y: .486122578}
+    - - {x: -1.0699048, y: .451366901}
       - {x: -.113516606, y: .411132604}
-      - {x: 1.25613248, y: .167121217}
-      - {x: 1.22631609, y: .042357415}
+      - {x: 1.01284289, y: .19492577}
+      - {x: .989977598, y: .0771130696}
       - {x: -.240140766, y: .0636419654}
-      - {x: -.488559484, y: -.387489378}
-      - {x: -1.11410391, y: -.479212433}
-      - {x: -1.26322722, y: .245164052}
+      - {x: -.530266285, y: -.317978084}
+      - {x: -1.00983703, y: -.402749926}
+      - {x: -1.17981362, y: .245164052}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 1
@@ -310,7 +310,7 @@ MonoBehaviour:
   explosion: {fileID: 100000, guid: e56e8ffe8511c2342bca3e2adfd00a10, type: 2}
   fireRateLevel: 0
   damageLevel: 0
-  bounceForce: 5000
+  bounceForce: 2000
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -353,6 +353,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 28b8cb8724da0e44483cb6debaf79f65, type: 3}
   minDeathVolume: 1
   maxDeathVolume: 1
+  shieldCharge:
+  - {fileID: 8300000, guid: 4eb4a4bde3c98bd408b9a6dbbead8c2b, type: 3}
+  - {fileID: 8300000, guid: 0c0c733b396392742b35504a845d1df0, type: 3}
+  - {fileID: 8300000, guid: b3042890fffce7748aae88afc758fdf8, type: 3}
+  minshieldChargeVolume: .800000012
+  maxshieldChargeVolume: 1
+  powerup:
+  - {fileID: 8300000, guid: 54e3286e8868d974c98dd1f78f402ad9, type: 3}
+  minPowerupVolume: .800000012
+  maxPowerupVolume: 1
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -28,13 +28,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Sample Assets/Sample Scenes/Scenes/Rolling Ball.unity
   - enabled: 0
-    path: Assets/Sample Assets/Sample Scenes/Scenes/AI Character.unity
-  - enabled: 0
     path: Assets/Sample Assets/Sample Scenes/Scenes/Third Person Character.unity
   - enabled: 0
     path: Assets/Sample Assets/Effects/Light Shafts/Scenes/LightShaft Directional.unity
   - enabled: 0
     path: Assets/Sample Assets/Effects/Light Shafts/Scenes/LightShaft Spot.unity
+  - enabled: 0
+    path: Assets/Sample Assets/Sample Scenes/Scenes/AI Character.unity
   - enabled: 0
     path: Assets/Sample Assets/Sample Scenes/Scenes/Car.unity
   - enabled: 0
@@ -47,6 +47,8 @@ EditorBuildSettings:
     path: Assets/Sample Assets/Sample Scenes/Scenes/Third Person Character.unity
   - enabled: 0
     path: Assets/Sample Assets/Sample Scenes/Scenes/2D Character.unity
+  - enabled: 1
+    path: Assets/bitshop/splashscreen.unity
   - enabled: 1
     path: Assets/bitshop/MainGame.unity
   - enabled: 1
